@@ -9,5 +9,5 @@
           markers.addLayer(marker)
         }, false);
         map.addLayer(markers)
-    })
+      })
 }) ()
