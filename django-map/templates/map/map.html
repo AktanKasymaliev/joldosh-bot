@@ -11,7 +11,10 @@
       .leaflet-container { height: 100%; }
     </style>
     {% block script %}
-    <script src="{% static 'map/js/map.js' %}"></script> 
+    <script>
+      var actuals = JSON.parse('{{ queryset | safe }}');
+    </script>
+    <script src="{% static 'map/js/map.js' %}"></script>
     {% endblock %}
   </head>
   <body>

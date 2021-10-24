@@ -35,7 +35,7 @@ class SavePointSerializer(serializers.ModelSerializer):
         problem = Problem.objects.create(created_at=timezone.now, **validated_data)
 
         try:
-            for image in request.data.pop('image'):
+            for image in request.data.pop('images'):
                 created = ProblemImage.objects.create(image=image, problem=problem)
                 problem.images.add(created)
         except (MultiValueDictKeyError, KeyError):

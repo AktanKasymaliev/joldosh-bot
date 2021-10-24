@@ -1,27 +1,33 @@
-import os
-from sqlalchemy import create_engine
-from sqlalchemy.sql.schema import Table, Column, Integer, String, MetaData
+import csv
+from abc import abstractmethod
+from io import TextIOWrapper
 
-class Database():
-    
-    driver= os.environ.get("DRIVER")
-    username = os.environ.get("DATABASE_USER")
-    host = os.environ.get("DATABASE_HOST")
-    port  = os.environ.get("DATABASE_PORT")
-    passwrod = os.environ.get("DATABASE_PASSW")
-    dbname = os.environ.get("DATABASE_NAME")
+class Store:
+
+    @abstractmethod
+    def write(self) -> None:
+        pass
+
+    @abstractmethod
+    def read(self):
+        pass
+
+
+class CsvManage(Store):
 
     def __init__(self) -> None:
-        engine = create_engine(
-            f"{self.driver}://{self.username}:{self.passwrod}@{self.host}/{self.dbname}", 
-            echo=True)
-        meta = MetaData()
-    
+        self.filename = "records.csv"
+        self.file = open(self.filename)
 
-    # def migrate_tables(self):
-    #     students = Table(
-    #     'students', self.meta, 
-    #     Column('id', Integer, primary_key = True), 
-    #     Column('name', String), 
-    #     Column('lastname', String), 
-    # )
+    def writer(self, data, rownames) -> None:
+        w = csv.writer(self.filename)
+        w.writerow(rownames)
+        w.writerows(data)
+        self.file.close()
+    
+    def read(self):
+        csvreader = csv.reader(self.file)
+    
+        for i in csvreader:
+            print(i)
+        self.file.close()
